@@ -1,5 +1,6 @@
 use MooseX::Declare;
 class App::Amylase::CLI::Command::deploy_database extends App::Amylase::CLI::BaseCommand {
+  use 5.010;
 
   has force => (
     isa           => 'Bool' ,
@@ -15,11 +16,13 @@ class App::Amylase::CLI::Command::deploy_database extends App::Amylase::CLI::Bas
 
     if ( -e $db ) {
       unless ( $self->force ) {
-        $self->usage_error( "Refusing to overwrite existing database" );
+        say STDERR "ERROR: Refusing to overwrite existing database at $db";
+        exit(1);
       }
     }
 
     $self->deploy_db;
+    say "Created database at $db";
   }
 };
 
