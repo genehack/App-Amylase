@@ -1,0 +1,16 @@
+#! /opt/perl/bin/perl
+use strict;
+use warnings;
+use 5.010;
+
+use FindBin;
+use lib "$FindBin::RealBin/../lib";
+
+use App::Amylase::CLI;
+App::Amylase::CLI->run;
+
+__END__
+
+=head1 NAME
+
+amylase 
