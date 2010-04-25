@@ -60,10 +60,10 @@ sub add_feed_again :Tests(5) {
   my $args   = [ @{ $test->base_args} , $test->{url} ];
   my $result = test_app( $test->class => $args );
 
-  my $error = "You're already subscribed to that feed!";
-  is( $result->stdout    , ''     , 'stdout is empty' );
-  is( $result->stderr    , $error , 'expected error on stderr' );
-  is( $result->exit_code , 1      , 'unclean exit' );
+  my $output = "You're already subscribed to that feed!";
+  is( $result->stdout    , ''      , 'stdout is empty' );
+  is( $result->stderr    , $output , 'expected error on stderr' );
+  is( $result->exit_code , 1       , 'unclean exit' );
 
   my $error = $result->error;
   isa_ok( $error , 'App::Cmd::Tester::Exited' );

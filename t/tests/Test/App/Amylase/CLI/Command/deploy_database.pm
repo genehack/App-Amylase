@@ -33,11 +33,11 @@ sub make_database_with_existing :Tests(5) {
 
   my $result = test_app( $test->class => $test->base_args );
 
-  my $error = sprintf( 'ERROR: Refusing to overwrite existing database at %s' , $test->{db_file} );
+  my $output = sprintf( 'ERROR: Refusing to overwrite existing database at %s' , $test->{db_file} );
 
-  is(   $result->stdout    , ''     , 'nothing on stdout' );
-  is(   $result->stderr    , $error , 'see expected error message' );
-  isnt( $result->exit_code , 0      , 'unclean exit' );
+  is(   $result->stdout    , ''      , 'nothing on stdout' );
+  is(   $result->stderr    , $output , 'see expected error message' );
+  isnt( $result->exit_code , 0       , 'unclean exit' );
 
   my $error = $result->error;
   isa_ok( $error , 'App::Cmd::Tester::Exited' );
