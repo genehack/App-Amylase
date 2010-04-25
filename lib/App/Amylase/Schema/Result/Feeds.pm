@@ -4,6 +4,9 @@ use warnings;
 use 5.010;
 use base 'DBIx::Class::Core';
 
+use DateTime;
+use XML::Feed;
+
 __PACKAGE__->load_components(
   'InflateColumn::DateTime' ,
   'TimeStamp' ,
@@ -30,6 +33,23 @@ __PACKAGE__->set_primary_key( 'id' );
 __PACKAGE__->has_many(
   'items' => 'App::Amylase::Schema::Result::Items' => { 'foreign.feed_id' => 'self.id' } ,
 );
+
+sub poll {
+  my( $self ) = @_;
+
+  my $feed = XML::Feed->parse( URI->new( $self->url ))
+    or die XML::Feed->errstr;
+
+  $self->title( $feed->title );
+  $self->link( $feed->link );
+  $self->tagline( $feed->tagline ) if $feed->tagline;
+  $self->last_modified( $feed->modified );
+
+  $self->last_poll( DateTime->now );
+  $self->last_good_poll( DateTime->now );
+
+}
+
 
 1;
 
