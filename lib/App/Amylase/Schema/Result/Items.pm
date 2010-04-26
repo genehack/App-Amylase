@@ -32,6 +32,22 @@ __PACKAGE__->belongs_to(
   'feed' => 'App::Amylase::Schema::Result::Feeds' => { 'foreign.id' => 'self.feed_id' } ,
 );
 
+sub potentially_update_item {
+  my( $self , $new_item_data ) = @_;
+
+  my $old_content = $self->content || '';
+
+  if ( $old_content ne $new_item_data->{content} ) {
+    $self->content( $new_item_data->{content} );
+    $self->state( 'changed' );
+  }
+
+  $self->link(   $new_item_data->{link}   );
+  $self->title(  $new_item_data->{title}  );
+  $self->author( $new_item_data->{author} );
+  $self->update();
+}
+
 1;
 
 __END__

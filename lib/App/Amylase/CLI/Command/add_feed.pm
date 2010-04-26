@@ -24,10 +24,7 @@ class App::Amylase::CLI::Command::add_feed extends App::Amylase::CLI::BaseComman
 
     my $feed = $feeds_rs->new({ url => $url });
     try {
-      $feed->poll;
-
-      $feed->insert;
-
+      $feed->poll();
       say "Added feed $url";
     }
     catch { say $_ ; exit 1 }
